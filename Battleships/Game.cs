@@ -18,5 +18,15 @@ namespace Battleships
     {
       throw new NotImplementedException();
     }
+
+    public void PlaceBattleship(string startSquare, Axis axis)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void PlaceDestroyer(string startSquare, Axis axis)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

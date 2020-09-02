@@ -48,6 +48,47 @@ namespace Battleships.Tests
     }
 
     [Theory]
+    [InlineData("A1", Axis.X, "A1", "A2", "A3", "A4", "A5")]
+    [InlineData("A2", Axis.X, "A2", "A3", "A4", "A5", "A6")]
+    [InlineData("B2", Axis.X, "B2", "B3", "B4", "B5", "B6")]
+    [InlineData("B2", Axis.Y, "B2", "C2", "D2", "E2", "F2")]
+    [InlineData("H2", Axis.X, "H2", "H3", "H4", "H5", "H6")]
+    public void Game_Should_Place_Battleship_Where_Specified(string startSquare, Axis axis, params string[] expectedSquares)
+    {
+      // arrange
+      var game = new Game();
+
+      // act 
+      game.PlaceBattleship(startSquare, axis);
+      
+      var battleship = game.GetBattleship();
+
+      // assert
+      battleship.Should().BeEquivalentTo(expectedSquares);
+    }
+
+    [Theory]
+    [InlineData("A1", Axis.X, "A1", "A2", "A3", "A4")]
+    [InlineData("A2", Axis.X, "A2", "A3", "A4", "A5")]
+    [InlineData("B2", Axis.X, "B2", "B3", "B4", "B5")]
+    [InlineData("B2", Axis.Y, "B2", "C2", "D2", "E2")]
+    [InlineData("H2", Axis.X, "H2", "H3", "H4", "H5")]
+    public void Game_Should_Place_Destroyer_Where_Specified(string startSquare, Axis axis, params string[] expectedSquares)
+    {
+      // arrange
+      var game = new Game();
+
+      // act 
+      game.PlaceDestroyer(startSquare, axis);
+
+      var destroyers = game.GetDestroyers();
+
+      // assert
+      destroyers.Length.Should().Be(1);
+      destroyers[0].Should().BeEquivalentTo(expectedSquares);
+    }
+
+    [Theory]
     [InlineData(true, Axis.X, "A1", "A2", "A3")]
     [InlineData(true, Axis.X, "A3", "A2", "A1")]
     [InlineData(false, Axis.X, "A1", "A2", "A4")]
@@ -83,12 +124,6 @@ namespace Battleships.Tests
       }
 
       return true;
-    }
-
-    public enum Axis
-    {
-      Y = 0,
-      X = 1
     }
   }
 }
