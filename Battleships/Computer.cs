@@ -2,29 +2,16 @@
 
 namespace Battleships
 {
-  public class Game
+  public class Computer
   {
+    private readonly Board _board;
+
+    public Computer(Board board)
+    {
+      _board = board;
+    }
+
     public void Start()
-    {
-      throw new NotImplementedException();
-    }
-
-    public string[] GetBattleship()
-    {
-      throw new NotImplementedException();
-    }
-
-    public string[][] GetDestroyers()
-    {
-      throw new NotImplementedException();
-    }
-
-    public void PlaceBattleship(string startSquare, Axis axis)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void PlaceDestroyer(string startSquare, Axis axis)
     {
       throw new NotImplementedException();
     }

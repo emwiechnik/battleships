@@ -10,13 +10,14 @@ namespace Battleships.Tests
     public void Game_Should_Initialize_With_1_Battleship_and_2_Destroyers()
     {
       // arrange
-      var game = new Game();
+      var board = new Board();
+      var computer = new Computer(board);
 
       // act 
-      game.Start();
+      computer.Start();
 
-      var battleship = game.GetBattleship();
-      var destroyers = game.GetDestroyers();
+      var battleship = board.GetBattleship();
+      var destroyers = board.GetDestroyers();
 
       // assert
       var expectedBattleshipLength = 5;
@@ -33,11 +34,13 @@ namespace Battleships.Tests
     public void Battleship_Should_Occupy_5_Consecutive_Squares()
     {
       // arrange
-      var game = new Game();
+      var board = new Board();
+      var game = new Computer(board);
 
       // act 
       game.Start();
-      var battleship = game.GetBattleship();
+
+      var battleship = board.GetBattleship();
 
       // assert
       var expectedBattleshipLength = 5;
@@ -56,7 +59,7 @@ namespace Battleships.Tests
     public void Game_Should_Place_Battleship_Where_Specified(string startSquare, Axis axis, params string[] expectedSquares)
     {
       // arrange
-      var game = new Game();
+      var game = new Board();
 
       // act 
       game.PlaceBattleship(startSquare, axis);
@@ -76,7 +79,7 @@ namespace Battleships.Tests
     public void Game_Should_Place_Destroyer_Where_Specified(string startSquare, Axis axis, params string[] expectedSquares)
     {
       // arrange
-      var game = new Game();
+      var game = new Board();
 
       // act 
       game.PlaceDestroyer(startSquare, axis);
