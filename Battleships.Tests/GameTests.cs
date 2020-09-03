@@ -190,6 +190,11 @@ namespace Battleships.Tests
     [InlineData(false, Axis.X, "A1", "B2", "C1")]
     [InlineData(false, Axis.X, "A1", "B2", "C3")]
     [InlineData(false, Axis.X, "C3", "B2", "A1")]
+    [InlineData(true, Axis.X, "G2", "H2", "I2", "J2")]
+    [InlineData(false, Axis.X, "G2", "H2", "I2", "J3")]
+    [InlineData(true, Axis.Y, "B7", "B8", "B9", "B10")]
+    [InlineData(false, Axis.X, "B7", "B8", "B9", "C10")]
+    [InlineData(false, Axis.X, "B7", "B7", "B9")]
     public void AreSquaresConsecutiveAcrossAxis_Should_Return_Correct_Result(bool expected, Axis axis, params string[] gridSquares)
     {
       // act
@@ -201,14 +206,18 @@ namespace Battleships.Tests
 
     private bool AreSquaresConsecutiveStraightAcrossAxis(string[] gridSquares, Axis axis)
     {
-      var axisValue = (int)axis;
-      var otherAxisValue = (int)(axis == Axis.X ? Axis.Y : Axis.X);
-
       for (var i = 0; i < gridSquares.Length - 1; ++i)
       {
-        var diffOnAxis = Math.Abs((int)gridSquares[i][axisValue] - (int)gridSquares[i + 1][axisValue]);
-        var diffOnOtherAxis = Math.Abs((int)gridSquares[i][otherAxisValue] - (int)gridSquares[i + 1][otherAxisValue]);
-        if (diffOnAxis > 1 || diffOnOtherAxis > 0)
+        var column1 = (int)(char.ToUpper(gridSquares[i][0]) - 'A');
+        var column2 = (int)(char.ToUpper(gridSquares[i + 1][0]) - 'A');
+        var row1 = int.Parse(gridSquares[i].Substring(1));
+        var row2 = int.Parse(gridSquares[i + 1].Substring(1));
+
+        var diffOnColumns = Math.Abs(column1 - column2);
+        var diffOnRows = Math.Abs(row1 - row2);
+
+        if ((axis == Axis.X && (diffOnColumns != 1 || diffOnRows != 0)) ||
+            (axis == Axis.Y && (diffOnColumns != 0 || diffOnRows != 1)))
         {
           return false;
         }
