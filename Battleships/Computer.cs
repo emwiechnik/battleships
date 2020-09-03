@@ -9,6 +9,7 @@ namespace Battleships
   {
     private readonly Board _board;
     private readonly List<string> _hits = new List<string>();
+    private static readonly Random _random = new Random();
 
     public Computer(Board board)
     {
@@ -17,9 +18,21 @@ namespace Battleships
 
     public void PlaceShips()
     {
-      _board.PlaceShip(ShipType.Battleship, "B2", Axis.X);
-      _board.PlaceShip(ShipType.Destroyer, "D3", Axis.Y);
-      _board.PlaceShip(ShipType.Destroyer, "G6", Axis.X);
+      PlaceShipRandomly(ShipType.Battleship);
+      PlaceShipRandomly(ShipType.Destroyer);
+      PlaceShipRandomly(ShipType.Destroyer);
+    }
+
+    private void PlaceShipRandomly(ShipType shipType)
+    {
+      bool placed;
+      do
+      {
+        var column = (char)(_random.Next(0, 9) + 'A');
+        var row = _random.Next(1, 10);
+        var axis = (Axis)_random.Next(0, 1);
+        placed = _board.PlaceShip(shipType, $"{column}{row}", axis);
+      } while(!placed);
     }
 
     public ShotResult MarkAShot(string shotSquare)
