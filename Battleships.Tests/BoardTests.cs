@@ -38,6 +38,7 @@ namespace Battleships.Tests
     [InlineData(ShipType.Destroyer, "B2", Axis.Y, "B2", "B3", "B4", "B5")]
     [InlineData(ShipType.Destroyer, "B2", Axis.X, "B2", "C2", "D2", "E2")]
     [InlineData(ShipType.Destroyer, "H2", Axis.Y, "H2", "H3", "H4", "H5")]
+    [InlineData(ShipType.Destroyer, "G1", Axis.X, "G1", "H1", "I1", "J1")]
     public void Ship_Should_Be_Placed_And_Returned_According_To_Specification(ShipType shipType, string startSquare, Axis axis, params string[] expectedSquares)
     {
       // arrange
@@ -56,10 +57,14 @@ namespace Battleships.Tests
     [Theory]
     [InlineData(ShipType.Battleship, "A1", Axis.Y, true)]
     [InlineData(ShipType.Battleship, "A8", Axis.Y, false)]
-    [InlineData(ShipType.Battleship, "A10", Axis.Y, false)]
+    [InlineData(ShipType.Battleship, "A6", Axis.Y, true)]
+    [InlineData(ShipType.Battleship, "B7", Axis.Y, false)]
     [InlineData(ShipType.Battleship, "B2", Axis.X, true)]
     [InlineData(ShipType.Battleship, "H2", Axis.X, false)]
     [InlineData(ShipType.Destroyer, "G9", Axis.Y, false)]
+    [InlineData(ShipType.Destroyer, "G1", Axis.X, true)]
+    [InlineData(ShipType.Battleship, "G1", Axis.X, false)]
+    [InlineData(ShipType.Destroyer, "H1", Axis.X, false)]
     public void Placing_A_Ship_Should_Be_Possible_Only_Within_The_Size_Of_The_Board(ShipType shipType, string startSquare, Axis axis, bool expected)
     {
       // arrange

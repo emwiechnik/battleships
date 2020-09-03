@@ -66,7 +66,7 @@ namespace Battleships
 
       for (var i = 0; i < _shipSizes[type]; ++i)
       {
-        if (row > RowCount || column > ColumnCount)
+        if (row > RowCount || column + 1 > ColumnCount)
         {
           throw new Exception("Ship will not fit!");
         }
