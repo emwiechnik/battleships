@@ -113,9 +113,10 @@ namespace Battleships.Tests
     [Theory]
     [InlineData(ShipType.Battleship, "A1", Axis.X, "A1", "A2", "A3", "A4", "A5")]
     [InlineData(ShipType.Battleship, "A1", Axis.X, "A5", "A4", "A3", "A2", "A1")]
-    [InlineData(ShipType.Battleship, "C3", Axis.Y, "C3", "D3", "E3", "F3", "G6")]
-    [InlineData(ShipType.Battleship, "C3", Axis.Y, "G3", "E3", "F3", "C3", "D6")]
+    [InlineData(ShipType.Battleship, "C3", Axis.Y, "C3", "D3", "E3", "F3", "G3")]
+    [InlineData(ShipType.Battleship, "C3", Axis.Y, "G3", "E3", "F3", "C3", "D3")]
     [InlineData(ShipType.Destroyer, "C3", Axis.Y, "C3", "D3", "E3", "F3")]
+    [InlineData(ShipType.Destroyer, "C3", Axis.Y, "E3", "D3", "C3", "F3")]
     public void Computer_Should_Inform_That_There_Was_A_Sink_After_Shooting_Last_Remaining_Square_Of_A_Ship(ShipType shipType, string startSquare, Axis axis, params string[] shotSquares)
     {
       // arrange

@@ -8,7 +8,8 @@ namespace Battleships
   public class Computer
   {
     private readonly Board _board;
-    
+    private readonly List<string> _hits = new List<string>();
+
     public Computer(Board board)
     {
       _board = board;
@@ -23,12 +24,16 @@ namespace Battleships
 
     public ShotResult MarkAShot(string shotSquare)
     {
-      var ships = _board.GetAllShipsOfType(ShipType.Battleship).ToList()
-                        .Union(_board.GetAllShipsOfType(ShipType.Destroyer));
-      foreach(var ship in ships)
+      var ships = GetAllShips();
+      foreach (var ship in ships)
       {
         if (ship.Contains(shotSquare))
         {
+          _hits.Add(shotSquare);
+          if (_hits.Intersect(ship).Count() == ship.Length)
+          {
+            return ShotResult.Sink;
+          }
           return ShotResult.Hit;
         }
       }
@@ -38,7 +43,23 @@ namespace Battleships
 
     public bool AllShipsSunk()
     {
-      throw new NotImplementedException();
+      var ships = GetAllShips().ToList();
+      var sunkShipsCount = 0;
+      foreach (var ship in ships)
+      {
+        if (_hits.Intersect(ship).Count() == ship.Length)
+        {
+          sunkShipsCount++;
+        }
+      }
+
+      return ships.Count == sunkShipsCount;
+    }
+
+    private IEnumerable<string[]> GetAllShips()
+    {
+      return _board.GetAllShipsOfType(ShipType.Battleship).ToList()
+                              .Union(_board.GetAllShipsOfType(ShipType.Destroyer));
     }
   }
 }
