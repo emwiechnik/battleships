@@ -46,16 +46,16 @@ namespace Battleships.Tests
     }
 
     [Theory]
-    [InlineData(ShipType.Battleship, "A1", Axis.X, "A1", "A2", "A3", "A4", "A5")]
-    [InlineData(ShipType.Battleship, "A2", Axis.X, "A2", "A3", "A4", "A5", "A6")]
-    [InlineData(ShipType.Battleship, "B2", Axis.X, "B2", "B3", "B4", "B5", "B6")]
-    [InlineData(ShipType.Battleship, "B2", Axis.Y, "B2", "C2", "D2", "E2", "F2")]
-    [InlineData(ShipType.Battleship, "H2", Axis.X, "H2", "H3", "H4", "H5", "H6")]
-    [InlineData(ShipType.Destroyer, "A1", Axis.X, "A1", "A2", "A3", "A4")]
-    [InlineData(ShipType.Destroyer, "A2", Axis.X, "A2", "A3", "A4", "A5")]
-    [InlineData(ShipType.Destroyer, "B2", Axis.X, "B2", "B3", "B4", "B5")]
-    [InlineData(ShipType.Destroyer, "B2", Axis.Y, "B2", "C2", "D2", "E2")]
-    [InlineData(ShipType.Destroyer, "H2", Axis.X, "H2", "H3", "H4", "H5")]
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, "A1", "A2", "A3", "A4", "A5")]
+    [InlineData(ShipType.Battleship, "A2", Axis.Y, "A2", "A3", "A4", "A5", "A6")]
+    [InlineData(ShipType.Battleship, "B2", Axis.Y, "B2", "B3", "B4", "B5", "B6")]
+    [InlineData(ShipType.Battleship, "B2", Axis.X, "B2", "C2", "D2", "E2", "F2")]
+    [InlineData(ShipType.Battleship, "H2", Axis.Y, "H2", "H3", "H4", "H5", "H6")]
+    [InlineData(ShipType.Destroyer, "A1", Axis.Y, "A1", "A2", "A3", "A4")]
+    [InlineData(ShipType.Destroyer, "A2", Axis.Y, "A2", "A3", "A4", "A5")]
+    [InlineData(ShipType.Destroyer, "B2", Axis.Y, "B2", "B3", "B4", "B5")]
+    [InlineData(ShipType.Destroyer, "B2", Axis.X, "B2", "C2", "D2", "E2")]
+    [InlineData(ShipType.Destroyer, "H2", Axis.Y, "H2", "H3", "H4", "H5")]
     public void Ship_Should_Be_Placed_And_Returned_According_To_Specification(ShipType shipType, string startSquare, Axis axis, params string[] expectedSquares)
     {
       // arrange
@@ -72,12 +72,12 @@ namespace Battleships.Tests
     }
 
     [Theory]
-    [InlineData(ShipType.Battleship, "A1", Axis.X, true)]
-    [InlineData(ShipType.Battleship, "A8", Axis.X, false)]
-    [InlineData(ShipType.Battleship, "A10", Axis.X, false)]
-    [InlineData(ShipType.Battleship, "B2", Axis.Y, true)]
-    [InlineData(ShipType.Battleship, "H2", Axis.Y, false)]
-    [InlineData(ShipType.Destroyer, "G9", Axis.X, false)]
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, true)]
+    [InlineData(ShipType.Battleship, "A8", Axis.Y, false)]
+    [InlineData(ShipType.Battleship, "A10", Axis.Y, false)]
+    [InlineData(ShipType.Battleship, "B2", Axis.X, true)]
+    [InlineData(ShipType.Battleship, "H2", Axis.X, false)]
+    [InlineData(ShipType.Destroyer, "G9", Axis.Y, false)]
     public void We_Should_Know_If_Placing_A_Ship_Was_Successful(ShipType shipType, string startSquare, Axis axis, bool expected)
     {
       // arrange
@@ -91,10 +91,10 @@ namespace Battleships.Tests
     }
 
     [Theory]
-    [InlineData(ShipType.Battleship, "A1", Axis.X, "A3", ShotResult.Hit)]
-    [InlineData(ShipType.Battleship, "A1", Axis.X, "B1", ShotResult.Miss)]
-    [InlineData(ShipType.Destroyer, "G6", Axis.X, "G8", ShotResult.Hit)]
-    [InlineData(ShipType.Destroyer, "G6", Axis.X, "D7", ShotResult.Miss)]
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, "A3", ShotResult.Hit)]
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, "B1", ShotResult.Miss)]
+    [InlineData(ShipType.Destroyer, "G6", Axis.Y, "G8", ShotResult.Hit)]
+    [InlineData(ShipType.Destroyer, "G6", Axis.Y, "D7", ShotResult.Miss)]
     public void Computer_Should_Inform_That_There_Was_A_Hit_Or_Miss(ShipType shipType, string startSquare, Axis axis, string shotSquare, ShotResult expected)
     {
       // arrange
@@ -111,12 +111,12 @@ namespace Battleships.Tests
     }
 
     [Theory]
-    [InlineData(ShipType.Battleship, "A1", Axis.X, "A1", "A2", "A3", "A4", "A5")]
-    [InlineData(ShipType.Battleship, "A1", Axis.X, "A5", "A4", "A3", "A2", "A1")]
-    [InlineData(ShipType.Battleship, "C3", Axis.Y, "C3", "D3", "E3", "F3", "G3")]
-    [InlineData(ShipType.Battleship, "C3", Axis.Y, "G3", "E3", "F3", "C3", "D3")]
-    [InlineData(ShipType.Destroyer, "C3", Axis.Y, "C3", "D3", "E3", "F3")]
-    [InlineData(ShipType.Destroyer, "C3", Axis.Y, "E3", "D3", "C3", "F3")]
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, "A1", "A2", "A3", "A4", "A5")]
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, "A5", "A4", "A3", "A2", "A1")]
+    [InlineData(ShipType.Battleship, "C3", Axis.X, "C3", "D3", "E3", "F3", "G3")]
+    [InlineData(ShipType.Battleship, "C3", Axis.X, "G3", "E3", "F3", "C3", "D3")]
+    [InlineData(ShipType.Destroyer, "C3", Axis.X, "C3", "D3", "E3", "F3")]
+    [InlineData(ShipType.Destroyer, "C3", Axis.X, "E3", "D3", "C3", "F3")]
     public void Computer_Should_Inform_That_There_Was_A_Sink_After_Shooting_Last_Remaining_Square_Of_A_Ship(ShipType shipType, string startSquare, Axis axis, params string[] shotSquares)
     {
       // arrange
@@ -144,9 +144,9 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(ShipType.Battleship, "B2", Axis.X);
-      board.PlaceShip(ShipType.Destroyer, "D3", Axis.Y);
-      board.PlaceShip(ShipType.Destroyer, "G6", Axis.X);
+      board.PlaceShip(ShipType.Battleship, "B2", Axis.Y);
+      board.PlaceShip(ShipType.Destroyer, "D3", Axis.X);
+      board.PlaceShip(ShipType.Destroyer, "G6", Axis.Y);
 
       var computer = new Computer(board);
 
@@ -180,16 +180,16 @@ namespace Battleships.Tests
 
 
     [Theory]
-    [InlineData(true, Axis.X, "A1", "A2", "A3")]
-    [InlineData(true, Axis.X, "A3", "A2", "A1")]
-    [InlineData(false, Axis.X, "A1", "A2", "A4")]
-    [InlineData(false, Axis.X, "A1", "B2", "A3")]
-    [InlineData(true, Axis.Y, "A1", "B1", "C1")]
-    [InlineData(true, Axis.Y, "C1", "B1", "A1")]
-    [InlineData(false, Axis.Y, "A1", "B1", "D1")]
-    [InlineData(false, Axis.Y, "A1", "B2", "C1")]
-    [InlineData(false, Axis.Y, "A1", "B2", "C3")]
-    [InlineData(false, Axis.Y, "C3", "B2", "A1")]
+    [InlineData(true, Axis.Y, "A1", "A2", "A3")]
+    [InlineData(true, Axis.Y, "A3", "A2", "A1")]
+    [InlineData(false, Axis.Y, "A1", "A2", "A4")]
+    [InlineData(false, Axis.Y, "A1", "B2", "A3")]
+    [InlineData(true, Axis.X, "A1", "B1", "C1")]
+    [InlineData(true, Axis.X, "C1", "B1", "A1")]
+    [InlineData(false, Axis.X, "A1", "B1", "D1")]
+    [InlineData(false, Axis.X, "A1", "B2", "C1")]
+    [InlineData(false, Axis.X, "A1", "B2", "C3")]
+    [InlineData(false, Axis.X, "C3", "B2", "A1")]
     public void AreSquaresConsecutiveAcrossAxis_Should_Return_Correct_Result(bool expected, Axis axis, params string[] gridSquares)
     {
       // act

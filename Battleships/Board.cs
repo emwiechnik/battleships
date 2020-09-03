@@ -52,8 +52,8 @@ namespace Battleships
 
       var start = startSquare.ToUpper();
 
-      var row = (int)(start[0] - 'A');
-      var column = int.Parse(start.Substring(1));
+      var column = (int)(start[0] - 'A');
+      var row = int.Parse(start.Substring(1));
 
       for (var i = 0; i < _shipSizes[type]; ++i)
       {
@@ -62,7 +62,7 @@ namespace Battleships
           throw new Exception("Ship will not fit!");
         }
 
-        var square = $"{(char)(row + 'A')}{column}";
+        var square = $"{(char)(column + 'A')}{row}";
         squares.Add(square);
 
         if (axis == Axis.X)
