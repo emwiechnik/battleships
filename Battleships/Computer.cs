@@ -15,5 +15,10 @@ namespace Battleships
     {
       throw new NotImplementedException();
     }
+
+    public object MarkAShot(string shotSquare)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

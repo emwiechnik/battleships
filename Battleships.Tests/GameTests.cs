@@ -1,3 +1,4 @@
+using Battleships.Enums;
 using FluentAssertions;
 using System;
 using Xunit;
@@ -35,10 +36,10 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      var game = new Computer(board);
+      var computer = new Computer(board);
 
       // act 
-      game.Start();
+      computer.Start();
 
       var battleship = board.GetBattleship();
 
@@ -51,20 +52,68 @@ namespace Battleships.Tests
     }
 
     [Theory]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, "A3", ShotResult.Hit)]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, "B1", ShotResult.Miss)]
+    public void Computer_Should_Inform_That_There_Was_A_Hit_Or_Miss(ShipType shipType, string startSquare, Axis axis, string shotSquare, ShotResult expected)
+    {
+      // arrange
+      var board = new Board();
+      board.PlaceShip(shipType, startSquare, axis);
+
+      var computer = new Computer(board);
+      computer.Start();
+
+      // act 
+      var actual = computer.MarkAShot(shotSquare);
+
+      // assert
+      actual.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, "A1", "A2", "A3", "A4", "A5")]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, "A5", "A4", "A3", "A2", "A1")]
+    [InlineData(ShipType.Battleship, "C3", Axis.Y, "C3", "D3", "E3", "F3", "G6")]
+    [InlineData(ShipType.Battleship, "C3", Axis.Y, "G3", "E3", "F3", "C3", "D6")]
+    [InlineData(ShipType.Destroyer, "C3", Axis.Y, "C3", "D3", "E3", "F3")]
+    public void Computer_Should_Inform_That_There_Was_A_Sink_After_Shooting_Last_Remaining_Square_Of_A_Ship(ShipType shipType, string startSquare, Axis axis, params string[] shotSquares)
+    {
+      // arrange
+      var board = new Board();
+      board.PlaceShip(shipType, startSquare, axis);
+
+      var computer = new Computer(board);
+      computer.Start();
+
+      for(var i = 0; i < shotSquares.Length - 1; ++i)
+      {
+        computer.MarkAShot(shotSquares[i]);
+      }
+      
+      var lastShot = shotSquares[shotSquares.Length - 1];
+
+      // act 
+      var actual = computer.MarkAShot(lastShot);
+
+      // assert
+      actual.Should().Be(ShotResult.Sink);
+    }
+
+    [Theory]
     [InlineData("A1", Axis.X, "A1", "A2", "A3", "A4", "A5")]
     [InlineData("A2", Axis.X, "A2", "A3", "A4", "A5", "A6")]
     [InlineData("B2", Axis.X, "B2", "B3", "B4", "B5", "B6")]
     [InlineData("B2", Axis.Y, "B2", "C2", "D2", "E2", "F2")]
     [InlineData("H2", Axis.X, "H2", "H3", "H4", "H5", "H6")]
-    public void Game_Should_Place_Battleship_Where_Specified(string startSquare, Axis axis, params string[] expectedSquares)
+    public void Game_Should_Place_Ship_Where_Specified(string startSquare, Axis axis, params string[] expectedSquares)
     {
       // arrange
-      var game = new Board();
+      var board = new Board();
 
       // act 
-      game.PlaceBattleship(startSquare, axis);
+      board.PlaceShip(ShipType.Battleship, startSquare, axis);
       
-      var battleship = game.GetBattleship();
+      var battleship = board.GetBattleship();
 
       // assert
       battleship.Should().BeEquivalentTo(expectedSquares);
@@ -82,7 +131,7 @@ namespace Battleships.Tests
       var game = new Board();
 
       // act 
-      game.PlaceDestroyer(startSquare, axis);
+      game.PlaceShip(ShipType.Destroyer, startSquare, axis);
 
       var destroyers = game.GetDestroyers();
 

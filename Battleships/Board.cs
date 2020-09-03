@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Battleships.Enums;
+using System;
 
 namespace Battleships
 {
@@ -14,12 +15,7 @@ namespace Battleships
       throw new NotImplementedException();
     }
 
-    public void PlaceBattleship(string startSquare, Axis axis)
-    {
-      throw new NotImplementedException();
-    }
-
-    public void PlaceDestroyer(string startSquare, Axis axis)
+    public void PlaceShip(ShipType type, string startSquare, Axis axis)
     {
       throw new NotImplementedException();
     }
