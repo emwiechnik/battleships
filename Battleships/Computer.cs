@@ -30,7 +30,7 @@ namespace Battleships
       {
         var column = (char)(_random.Next(0, 9) + 'A');
         var row = _random.Next(1, 10);
-        var axis = (Axis)_random.Next(0, 1);
+        var axis = _random.Next(0, 100) >= 50 ? Axis.Y : Axis.X;
         placed = _board.PlaceShip(shipType, $"{column}{row}", axis);
       } while(!placed);
     }
