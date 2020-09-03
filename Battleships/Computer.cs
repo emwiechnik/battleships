@@ -11,12 +11,17 @@ namespace Battleships
       _board = board;
     }
 
-    public void Start()
+    public void PlaceShips()
     {
       throw new NotImplementedException();
     }
 
     public object MarkAShot(string shotSquare)
+    {
+      throw new NotImplementedException();
+    }
+
+    public bool AllShipsSunk()
     {
       throw new NotImplementedException();
     }

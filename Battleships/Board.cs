@@ -5,12 +5,7 @@ namespace Battleships
 {
   public class Board
   {
-    public string[] GetBattleship()
-    {
-      throw new NotImplementedException();
-    }
-
-    public string[][] GetDestroyers()
+    public string[][] GetAllShipsOfType(ShipType shipType)
     {
       throw new NotImplementedException();
     }
