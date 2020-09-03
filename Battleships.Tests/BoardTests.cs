@@ -55,17 +55,17 @@ namespace Battleships.Tests
     }
 
     [Theory]
-    [InlineData(ShipType.Battleship, "A1", Axis.Y, true)]
-    [InlineData(ShipType.Battleship, "A8", Axis.Y, false)]
-    [InlineData(ShipType.Battleship, "A6", Axis.Y, true)]
-    [InlineData(ShipType.Battleship, "B7", Axis.Y, false)]
-    [InlineData(ShipType.Battleship, "B2", Axis.X, true)]
-    [InlineData(ShipType.Battleship, "H2", Axis.X, false)]
-    [InlineData(ShipType.Destroyer, "G9", Axis.Y, false)]
-    [InlineData(ShipType.Destroyer, "G1", Axis.X, true)]
-    [InlineData(ShipType.Battleship, "G1", Axis.X, false)]
-    [InlineData(ShipType.Destroyer, "H1", Axis.X, false)]
-    public void Placing_A_Ship_Should_Be_Possible_Only_Within_The_Size_Of_The_Board(ShipType shipType, string startSquare, Axis axis, bool expected)
+    [InlineData(ShipType.Battleship, "A1", Axis.Y, Result.Success)]
+    [InlineData(ShipType.Battleship, "A8", Axis.Y, Result.Failure)]
+    [InlineData(ShipType.Battleship, "A6", Axis.Y, Result.Success)]
+    [InlineData(ShipType.Battleship, "B7", Axis.Y, Result.Failure)]
+    [InlineData(ShipType.Battleship, "B2", Axis.X, Result.Success)]
+    [InlineData(ShipType.Battleship, "H2", Axis.X, Result.Failure)]
+    [InlineData(ShipType.Destroyer, "G9", Axis.Y, Result.Failure)]
+    [InlineData(ShipType.Destroyer, "G1", Axis.X, Result.Success)]
+    [InlineData(ShipType.Battleship, "G1", Axis.X, Result.Failure)]
+    [InlineData(ShipType.Destroyer, "H1", Axis.X, Result.Failure)]
+    public void Placing_A_Ship_Should_Be_Possible_Only_Within_The_Size_Of_The_Board(ShipType shipType, string startSquare, Axis axis, Result expected)
     {
       // arrange
       var board = new Board();
@@ -88,7 +88,7 @@ namespace Battleships.Tests
       board.PlaceShip(shipType1, startSquare1, axis1);
 
       // act 
-      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2);
+      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2) == Result.Success;
 
       // assert
       wasPlaced.Should().BeFalse();
@@ -105,7 +105,7 @@ namespace Battleships.Tests
       board.PlaceShip(shipType1, startSquare1, axis1);
 
       // act 
-      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2);
+      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2) == Result.Success;
 
       // assert
       wasPlaced.Should().BeTrue();

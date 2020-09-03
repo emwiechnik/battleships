@@ -28,7 +28,7 @@ namespace Battleships
       return _ships.TryGetValue(shipType, out List<string[]> ships) ? ships.ToArray() : new List<string[]>().ToArray();
     }
 
-    public bool PlaceShip(ShipType type, string startSquare, Axis axis)
+    public Result PlaceShip(ShipType type, string startSquare, Axis axis)
     {
       if (!_ships.ContainsKey(type))
       {
@@ -47,11 +47,11 @@ namespace Battleships
         }
 
         _ships[type].Add(ship);
-        return true;
+        return Result.Success;
       }
       catch (Exception)
       {
-        return false;
+        return Result.Failure;
       }
     }
 

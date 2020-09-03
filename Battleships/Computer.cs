@@ -23,18 +23,6 @@ namespace Battleships
       PlaceShipRandomly(ShipType.Destroyer);
     }
 
-    private void PlaceShipRandomly(ShipType shipType)
-    {
-      bool placed;
-      do
-      {
-        var column = (char)(_random.Next(0, 9) + 'A');
-        var row = _random.Next(1, 10);
-        var axis = _random.Next(0, 100) >= 50 ? Axis.Y : Axis.X;
-        placed = _board.PlaceShip(shipType, $"{column}{row}", axis);
-      } while(!placed);
-    }
-
     public ShotResult MarkAShot(string shotSquare)
     {
       var ships = GetAllShips();
@@ -67,6 +55,18 @@ namespace Battleships
       }
 
       return ships.Count == sunkShipsCount;
+    }
+
+    private void PlaceShipRandomly(ShipType shipType)
+    {
+      bool placed;
+      do
+      {
+        var column = (char)(_random.Next(0, 9) + 'A');
+        var row = _random.Next(1, 10);
+        var axis = _random.Next(0, 100) >= 50 ? Axis.Y : Axis.X;
+        placed = _board.PlaceShip(shipType, $"{column}{row}", axis) == Result.Success;
+      } while (!placed);
     }
 
     private IEnumerable<string[]> GetAllShips()
