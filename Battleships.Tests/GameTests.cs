@@ -93,6 +93,8 @@ namespace Battleships.Tests
     [Theory]
     [InlineData(ShipType.Battleship, "A1", Axis.X, "A3", ShotResult.Hit)]
     [InlineData(ShipType.Battleship, "A1", Axis.X, "B1", ShotResult.Miss)]
+    [InlineData(ShipType.Destroyer, "G6", Axis.X, "G8", ShotResult.Hit)]
+    [InlineData(ShipType.Destroyer, "G6", Axis.X, "D7", ShotResult.Miss)]
     public void Computer_Should_Inform_That_There_Was_A_Hit_Or_Miss(ShipType shipType, string startSquare, Axis axis, string shotSquare, ShotResult expected)
     {
       // arrange

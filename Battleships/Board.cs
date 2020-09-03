@@ -33,6 +33,7 @@ namespace Battleships
       {
         _ships.Add(type, new List<string[]>());
       }
+
       try
       {
         var ship = GenerateShip(type, startSquare, axis);
