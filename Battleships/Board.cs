@@ -1,6 +1,7 @@
 ﻿using Battleships.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Battleships
 {
@@ -37,6 +38,14 @@ namespace Battleships
       try
       {
         var ship = GenerateShip(type, startSquare, axis);
+        foreach (var shipAlreadyOnBoard in _ships.Values.SelectMany(sh => sh))
+        {
+          if (shipAlreadyOnBoard.Intersect(ship).Any())
+          {
+            throw new Exception("Cannot place a ship on another ship!");
+          }
+        }
+
         _ships[type].Add(ship);
         return true;
       }

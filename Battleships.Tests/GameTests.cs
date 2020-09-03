@@ -1,6 +1,8 @@
 using Battleships.Enums;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Battleships.Tests
@@ -23,6 +25,41 @@ namespace Battleships.Tests
       // assert
       battleships.Length.Should().Be(1);
       destroyers.Length.Should().Be(2);
+    }
+
+    [Fact]
+    public void Computer_Should_Place_Ships_In_Random_Places_On_The_Board()
+    {
+      // arrange
+      const int attemptsCount = 5;
+      var eachAttemptResults = new List<List<string>>();
+      var sameResultsCount = 0;
+
+      var acceptableSameResultsCount = attemptsCount - 1;
+
+      // act 
+      for (int i = 0; i < attemptsCount; ++i)
+      {
+        var board = new Board();
+        var computer = new Computer(board);
+
+        computer.PlaceShips();
+
+        var battleships = board.GetAllShipsOfType(ShipType.Battleship);
+        var destroyers = board.GetAllShipsOfType(ShipType.Destroyer);
+
+        var allShipSquares = battleships.Union(destroyers).SelectMany(sh => sh).ToList();
+
+        if (eachAttemptResults.Any(result => result.Intersect(allShipSquares).Count() == allShipSquares.Count))
+        {
+          sameResultsCount++;
+        }
+
+        eachAttemptResults.Add(allShipSquares);
+      }
+
+      // assert
+      sameResultsCount.Should().BeLessThan(acceptableSameResultsCount);
     }
 
     [Theory]
@@ -78,7 +115,7 @@ namespace Battleships.Tests
     [InlineData(ShipType.Battleship, "B2", Axis.X, true)]
     [InlineData(ShipType.Battleship, "H2", Axis.X, false)]
     [InlineData(ShipType.Destroyer, "G9", Axis.Y, false)]
-    public void We_Should_Know_If_Placing_A_Ship_Was_Successful(ShipType shipType, string startSquare, Axis axis, bool expected)
+    public void Placing_A_Ship_Should_Be_Possible_Only_Within_The_Size_Of_The_Board(ShipType shipType, string startSquare, Axis axis, bool expected)
     {
       // arrange
       var board = new Board();
@@ -88,6 +125,40 @@ namespace Battleships.Tests
 
       // assert
       actual.Should().Be(expected);
+    }
+
+    [Theory]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, ShipType.Battleship, "D1", Axis.Y)]
+    [InlineData(ShipType.Battleship, "B1", Axis.Y, ShipType.Battleship, "A3", Axis.X)]
+    [InlineData(ShipType.Battleship, "F4", Axis.Y, ShipType.Destroyer, "F7", Axis.X)]
+    public void Placing_A_Ship_On_Another_Ship_Should_Not_Be_Possible(ShipType shipType1, string startSquare1, Axis axis1, ShipType shipType2, string startSquare2, Axis axis2)
+    {
+      // arrange
+      var board = new Board();
+      board.PlaceShip(shipType1, startSquare1, axis1);
+
+      // act 
+      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2);
+
+      // assert
+      wasPlaced.Should().BeFalse();
+    }
+
+    [Theory]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, ShipType.Battleship, "D2", Axis.Y)]
+    [InlineData(ShipType.Battleship, "B1", Axis.Y, ShipType.Battleship, "C2", Axis.X)]
+    [InlineData(ShipType.Battleship, "F4", Axis.Y, ShipType.Destroyer, "G4", Axis.X)]
+    public void Placing_A_Ship_Next_To_Another_Ship_Should_Be_Possible(ShipType shipType1, string startSquare1, Axis axis1, ShipType shipType2, string startSquare2, Axis axis2)
+    {
+      // arrange
+      var board = new Board();
+      board.PlaceShip(shipType1, startSquare1, axis1);
+
+      // act 
+      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2);
+
+      // assert
+      wasPlaced.Should().BeTrue();
     }
 
     [Theory]
