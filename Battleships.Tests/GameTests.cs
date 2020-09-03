@@ -34,6 +34,7 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
+      board.PlaceShip(shipType, "A1", axis);
 
       // act
       var ships = board.GetAllShipsOfType(shipType);
@@ -68,6 +69,25 @@ namespace Battleships.Tests
       // assert
       ships.Length.Should().Be(1);
       ships[0].Should().BeEquivalentTo(expectedSquares);
+    }
+
+    [Theory]
+    [InlineData(ShipType.Battleship, "A1", Axis.X, true)]
+    [InlineData(ShipType.Battleship, "A8", Axis.X, false)]
+    [InlineData(ShipType.Battleship, "A10", Axis.X, false)]
+    [InlineData(ShipType.Battleship, "B2", Axis.Y, true)]
+    [InlineData(ShipType.Battleship, "H2", Axis.Y, false)]
+    [InlineData(ShipType.Destroyer, "G9", Axis.X, false)]
+    public void We_Should_Know_If_Placing_A_Ship_Was_Successful(ShipType shipType, string startSquare, Axis axis, bool expected)
+    {
+      // arrange
+      var board = new Board();
+
+      // act 
+      var actual = board.PlaceShip(shipType, startSquare, axis);
+
+      // assert
+      actual.Should().Be(expected);
     }
 
     [Theory]
@@ -154,6 +174,7 @@ namespace Battleships.Tests
       allSunkBeforeLastShot.Should().BeFalse();
       allSunkAfterLastShot.Should().BeTrue();
     }
+
 
     [Theory]
     [InlineData(true, Axis.X, "A1", "A2", "A3")]

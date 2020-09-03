@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Battleships.Enums;
+using System;
 
 namespace Battleships
 {
@@ -13,7 +14,9 @@ namespace Battleships
 
     public void PlaceShips()
     {
-      throw new NotImplementedException();
+      _board.PlaceShip(ShipType.Battleship, "B2", Axis.X);
+      _board.PlaceShip(ShipType.Destroyer, "D3", Axis.Y);
+      _board.PlaceShip(ShipType.Destroyer, "G6", Axis.X);
     }
 
     public object MarkAShot(string shotSquare)
