@@ -7,5 +7,5 @@ Branches:
 
 Steps to build and run it:
 1. git clone https://github.com/emwiechnik/battleships.git
-2. open Battleships.sln in Visual Studio
+2. open Battleships.sln in Visual Studio with .NET Core 3.1
 3. build and run project *Battleships*.
