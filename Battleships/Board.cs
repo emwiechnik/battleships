@@ -35,27 +35,24 @@ namespace Battleships
         _ships.Add(type, new List<Square[]>());
       }
 
-      try
+      if (TryGenerateShip(type, startSquare, axis, out Square[] ship))
       {
-        var ship = GenerateShip(type, startSquare, axis);
         foreach (var shipAlreadyOnBoard in _ships.Values.SelectMany(sh => sh))
         {
           if (shipAlreadyOnBoard.Intersect(ship).Any())
           {
-            throw new Exception("Cannot place a ship on another ship!");
+            return Result.Failure;
           }
         }
 
         _ships[type].Add(ship);
         return Result.Success;
       }
-      catch (Exception)
-      {
-        return Result.Failure;
-      }
+
+      return Result.Failure;
     }
 
-    private Square[] GenerateShip(ShipType type, Square startSquare, Axis axis)
+    private bool TryGenerateShip(ShipType type, Square startSquare, Axis axis, out Square[] shipSquares)
     {
       var squares = new List<Square>();
 
@@ -66,7 +63,7 @@ namespace Battleships
       {
         if (row > RowCount || column + 1 > ColumnCount)
         {
-          throw new Exception("Ship will not fit!");
+          break;
         }
 
         var square = new Square((char)(column + 'A'), row);
@@ -82,7 +79,9 @@ namespace Battleships
         }
       }
 
-      return squares.ToArray();
+      shipSquares = squares.ToArray();
+
+      return squares.Count == _shipSizes[type];
     }
   }
 }
