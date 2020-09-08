@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Battleships.ValueObjects;
+using FluentAssertions;
 using Xunit;
 
 namespace Battleships.Tests

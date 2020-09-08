@@ -1,4 +1,6 @@
 using Battleships.Enums;
+using Battleships.Logic;
+using Battleships.ValueObjects;
 using FluentAssertions;
 using System;
 using System.Collections.Generic;

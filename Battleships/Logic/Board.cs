@@ -1,9 +1,9 @@
 ﻿using Battleships.Enums;
-using System;
+using Battleships.ValueObjects;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Battleships
+namespace Battleships.Logic
 {
   public class Board
   {

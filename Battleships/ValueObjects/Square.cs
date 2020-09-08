@@ -1,4 +1,4 @@
-﻿namespace Battleships
+﻿namespace Battleships.ValueObjects
 {
   public class Square
   {
