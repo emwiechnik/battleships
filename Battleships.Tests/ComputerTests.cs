@@ -31,7 +31,7 @@ namespace Battleships.Tests
     {
       // arrange
       const int attemptsCount = 5;
-      var eachAttemptResults = new List<List<string>>();
+      var eachAttemptResults = new List<List<Square>>();
       var sameResultsCount = 0;
 
       var acceptableSameResultsCount = attemptsCount - 1;
@@ -70,12 +70,12 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(shipType, startSquare, axis);
+      board.PlaceShip(shipType, new Square(startSquare), axis);
 
       var computer = new Computer(board);
 
       // act 
-      var actual = computer.MarkAShot(shotSquare);
+      var actual = computer.MarkAShot(new Square(shotSquare));
 
       // assert
       actual.Should().Be(expected);
@@ -92,19 +92,19 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(shipType, startSquare, axis);
+      board.PlaceShip(shipType, new Square(startSquare), axis);
 
       var computer = new Computer(board);
 
       for (var i = 0; i < shotSquares.Length - 1; ++i)
       {
-        computer.MarkAShot(shotSquares[i]);
+        computer.MarkAShot(new Square(shotSquares[i]));
       }
 
       var lastShot = shotSquares[shotSquares.Length - 1];
 
       // act 
-      var actual = computer.MarkAShot(lastShot);
+      var actual = computer.MarkAShot(new Square(lastShot));
 
       // assert
       actual.Should().Be(ShotResult.Sink);
@@ -115,9 +115,9 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(ShipType.Battleship, "B2", Axis.Y);
-      board.PlaceShip(ShipType.Destroyer, "D3", Axis.X);
-      board.PlaceShip(ShipType.Destroyer, "G6", Axis.Y);
+      board.PlaceShip(ShipType.Battleship, new Square("B2"), Axis.Y);
+      board.PlaceShip(ShipType.Destroyer, new Square("D3"), Axis.X);
+      board.PlaceShip(ShipType.Destroyer, new Square("G6"), Axis.Y);
 
       var computer = new Computer(board);
 
@@ -134,14 +134,14 @@ namespace Battleships.Tests
       // act
       foreach (var shot in shots)
       {
-        computer.MarkAShot(shot);
+        computer.MarkAShot(new Square(shot));
         if (computer.AllShipsSunk())
         {
           allSunkBeforeLastShot = true;
         }
       }
 
-      computer.MarkAShot(lastShot);
+      computer.MarkAShot(new Square(lastShot));
       var allSunkAfterLastShot = computer.AllShipsSunk();
 
       // assert

@@ -1,6 +1,8 @@
 using Battleships.Enums;
 using FluentAssertions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace Battleships.Tests
@@ -16,7 +18,7 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(shipType, "A1", axis);
+      board.PlaceShip(shipType, new Square('A', 1), axis);
 
       // act
       var ships = board.GetAllShipsOfType(shipType);
@@ -43,15 +45,16 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
+      var expected = expectedSquares.Select(s => new Square(s));
 
       // act 
-      board.PlaceShip(shipType, startSquare, axis);
+      board.PlaceShip(shipType, new Square(startSquare), axis);
 
       var ships = board.GetAllShipsOfType(shipType);
 
       // assert
       ships.Count.Should().Be(1);
-      ships[0].Should().BeEquivalentTo(expectedSquares);
+      ships[0].Should().BeEquivalentTo(expected);
     }
 
     [Theory]
@@ -71,7 +74,7 @@ namespace Battleships.Tests
       var board = new Board();
 
       // act 
-      var actual = board.PlaceShip(shipType, startSquare, axis);
+      var actual = board.PlaceShip(shipType, new Square(startSquare), axis);
 
       // assert
       actual.Should().Be(expected);
@@ -85,10 +88,10 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(shipType1, startSquare1, axis1);
+      board.PlaceShip(shipType1, new Square(startSquare1), axis1);
 
       // act 
-      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2) == Result.Success;
+      var wasPlaced = board.PlaceShip(shipType2, new Square(startSquare2), axis2) == Result.Success;
 
       // assert
       wasPlaced.Should().BeFalse();
@@ -102,10 +105,10 @@ namespace Battleships.Tests
     {
       // arrange
       var board = new Board();
-      board.PlaceShip(shipType1, startSquare1, axis1);
+      board.PlaceShip(shipType1, new Square(startSquare1), axis1);
 
       // act 
-      var wasPlaced = board.PlaceShip(shipType2, startSquare2, axis2) == Result.Success;
+      var wasPlaced = board.PlaceShip(shipType2, new Square(startSquare2), axis2) == Result.Success;
 
       // assert
       wasPlaced.Should().BeTrue();
@@ -129,21 +132,24 @@ namespace Battleships.Tests
     [InlineData(false, Axis.X, "B7", "B7", "B9")]
     public void AreSquaresConsecutiveAcrossAxis_Should_Return_Correct_Result(bool expected, Axis axis, params string[] gridSquares)
     {
+      // arrange
+      var squares = gridSquares.Select(s => new Square(s)).ToList();
+
       // act
-      var actual = AreSquaresConsecutiveStraightAcrossAxis(gridSquares, axis);
+      var actual = AreSquaresConsecutiveStraightAcrossAxis(squares, axis);
 
       // assert
       actual.Should().Be(expected);
     }
 
-    private bool AreSquaresConsecutiveStraightAcrossAxis(string[] gridSquares, Axis axis)
+    private bool AreSquaresConsecutiveStraightAcrossAxis(IReadOnlyList<Square> gridSquares, Axis axis)
     {
-      for (var i = 0; i < gridSquares.Length - 1; ++i)
+      for (var i = 0; i < gridSquares.Count - 1; ++i)
       {
-        var column1 = (int)(char.ToUpper(gridSquares[i][0]) - 'A');
-        var column2 = (int)(char.ToUpper(gridSquares[i + 1][0]) - 'A');
-        var row1 = int.Parse(gridSquares[i].Substring(1));
-        var row2 = int.Parse(gridSquares[i + 1].Substring(1));
+        var column1 = (int)(char.ToUpper(gridSquares[i].Column) - 'A');
+        var column2 = (int)(char.ToUpper(gridSquares[i + 1].Column) - 'A');
+        var row1 = gridSquares[i].Row;
+        var row2 = gridSquares[i + 1].Row;
 
         var diffOnColumns = Math.Abs(column1 - column2);
         var diffOnRows = Math.Abs(row1 - row2);

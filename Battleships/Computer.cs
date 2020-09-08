@@ -8,7 +8,7 @@ namespace Battleships
   public class Computer
   {
     private readonly Board _board;
-    private readonly List<string> _hits = new List<string>();
+    private readonly List<Square> _hits = new List<Square>();
     private static readonly Random _random = new Random();
 
     public Computer(Board board)
@@ -23,7 +23,7 @@ namespace Battleships
       PlaceShipRandomly(ShipType.Destroyer);
     }
 
-    public ShotResult MarkAShot(string shotSquare)
+    public ShotResult MarkAShot(Square shotSquare)
     {
       var ships = GetAllShips();
       foreach (var ship in ships)
@@ -65,11 +65,11 @@ namespace Battleships
         var column = (char)(_random.Next(0, 9) + 'A');
         var row = _random.Next(1, 10);
         var axis = _random.Next(0, 100) >= 50 ? Axis.Y : Axis.X;
-        placed = _board.PlaceShip(shipType, $"{column}{row}", axis) == Result.Success;
+        placed = _board.PlaceShip(shipType, new Square(column, row), axis) == Result.Success;
       } while (!placed);
     }
 
-    private IEnumerable<string[]> GetAllShips()
+    private IEnumerable<Square[]> GetAllShips()
     {
       return _board.GetAllShipsOfType(ShipType.Battleship)
                    .Union(_board.GetAllShipsOfType(ShipType.Destroyer));

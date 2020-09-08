@@ -7,7 +7,7 @@ namespace Battleships
 {
   public class Board
   {
-    private readonly Dictionary<ShipType, IList<string[]>> _ships;
+    private readonly Dictionary<ShipType, IList<Square[]>> _ships;
     private readonly Dictionary<ShipType, int> _shipSizes;
 
     private const int RowCount = 10;
@@ -15,7 +15,7 @@ namespace Battleships
 
     public Board()
     {
-      _ships = new Dictionary<ShipType, IList<string[]>>();
+      _ships = new Dictionary<ShipType, IList<Square[]>>();
       _shipSizes = new Dictionary<ShipType, int>()
       {
         { ShipType.Battleship, 5 },
@@ -23,16 +23,16 @@ namespace Battleships
       };
     }
 
-    public IList<string[]> GetAllShipsOfType(ShipType shipType)
+    public IList<Square[]> GetAllShipsOfType(ShipType shipType)
     {
-      return _ships.TryGetValue(shipType, out IList<string[]> ships) ? ships : new List<string[]>();
+      return _ships.TryGetValue(shipType, out IList<Square[]> ships) ? ships : new List<Square[]>();
     }
 
-    public Result PlaceShip(ShipType type, string startSquare, Axis axis)
+    public Result PlaceShip(ShipType type, Square startSquare, Axis axis)
     {
       if (!_ships.ContainsKey(type))
       {
-        _ships.Add(type, new List<string[]>());
+        _ships.Add(type, new List<Square[]>());
       }
 
       try
@@ -55,14 +55,12 @@ namespace Battleships
       }
     }
 
-    private string[] GenerateShip(ShipType type, string startSquare, Axis axis)
+    private Square[] GenerateShip(ShipType type, Square startSquare, Axis axis)
     {
-      var squares = new List<string>();
+      var squares = new List<Square>();
 
-      var start = startSquare.ToUpper();
-
-      var column = (int)(start[0] - 'A');
-      var row = int.Parse(start.Substring(1));
+      var column = (int)(startSquare.Column - 'A');
+      var row = startSquare.Row;
 
       for (var i = 0; i < _shipSizes[type]; ++i)
       {
@@ -71,7 +69,7 @@ namespace Battleships
           throw new Exception("Ship will not fit!");
         }
 
-        var square = $"{(char)(column + 'A')}{row}";
+        var square = new Square((char)(column + 'A'), row);
         squares.Add(square);
 
         if (axis == Axis.X)

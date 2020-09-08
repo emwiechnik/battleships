@@ -20,7 +20,7 @@ namespace Battleships
         Console.Write("\nEnter the coordinates to shoot: ");
         var coordinates = Console.ReadLine();
 
-        var shotResult = computer.MarkAShot(coordinates);
+        var shotResult = computer.MarkAShot(new Square(coordinates));
         
         var message = GetMessageBasedOnResult(shotResult);
 
