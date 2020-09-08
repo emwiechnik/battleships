@@ -71,8 +71,8 @@ namespace Battleships
 
     private IEnumerable<string[]> GetAllShips()
     {
-      return _board.GetAllShipsOfType(ShipType.Battleship).ToList()
-                              .Union(_board.GetAllShipsOfType(ShipType.Destroyer));
+      return _board.GetAllShipsOfType(ShipType.Battleship)
+                   .Union(_board.GetAllShipsOfType(ShipType.Destroyer));
     }
   }
 }

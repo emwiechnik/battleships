@@ -22,8 +22,8 @@ namespace Battleships.Tests
       var destroyers = board.GetAllShipsOfType(ShipType.Destroyer);
 
       // assert
-      battleships.Length.Should().Be(1);
-      destroyers.Length.Should().Be(2);
+      battleships.Count.Should().Be(1);
+      destroyers.Count.Should().Be(2);
     }
 
     [Fact]

@@ -7,7 +7,7 @@ namespace Battleships
 {
   public class Board
   {
-    private readonly Dictionary<ShipType, List<string[]>> _ships;
+    private readonly Dictionary<ShipType, IList<string[]>> _ships;
     private readonly Dictionary<ShipType, int> _shipSizes;
 
     private const int RowCount = 10;
@@ -15,7 +15,7 @@ namespace Battleships
 
     public Board()
     {
-      _ships = new Dictionary<ShipType, List<string[]>>();
+      _ships = new Dictionary<ShipType, IList<string[]>>();
       _shipSizes = new Dictionary<ShipType, int>()
       {
         { ShipType.Battleship, 5 },
@@ -23,9 +23,9 @@ namespace Battleships
       };
     }
 
-    public string[][] GetAllShipsOfType(ShipType shipType)
+    public IList<string[]> GetAllShipsOfType(ShipType shipType)
     {
-      return _ships.TryGetValue(shipType, out List<string[]> ships) ? ships.ToArray() : new List<string[]>().ToArray();
+      return _ships.TryGetValue(shipType, out IList<string[]> ships) ? ships : new List<string[]>();
     }
 
     public Result PlaceShip(ShipType type, string startSquare, Axis axis)

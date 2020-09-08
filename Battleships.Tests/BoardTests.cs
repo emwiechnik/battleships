@@ -50,7 +50,7 @@ namespace Battleships.Tests
       var ships = board.GetAllShipsOfType(shipType);
 
       // assert
-      ships.Length.Should().Be(1);
+      ships.Count.Should().Be(1);
       ships[0].Should().BeEquivalentTo(expectedSquares);
     }
 
