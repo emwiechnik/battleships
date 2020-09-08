@@ -1,13 +1,13 @@
 ﻿using Battleships.Enums;
-using System;
+using Battleships.ValueObjects;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Battleships
+namespace Battleships.Logic
 {
   public class Board
   {
-    private readonly Dictionary<ShipType, List<string[]>> _ships;
+    private readonly Dictionary<ShipType, IList<Square[]>> _ships;
     private readonly Dictionary<ShipType, int> _shipSizes;
 
     private const int RowCount = 10;
@@ -15,7 +15,7 @@ namespace Battleships
 
     public Board()
     {
-      _ships = new Dictionary<ShipType, List<string[]>>();
+      _ships = new Dictionary<ShipType, IList<Square[]>>();
       _shipSizes = new Dictionary<ShipType, int>()
       {
         { ShipType.Battleship, 5 },
@@ -23,55 +23,50 @@ namespace Battleships
       };
     }
 
-    public string[][] GetAllShipsOfType(ShipType shipType)
+    public IList<Square[]> GetAllShipsOfType(ShipType shipType)
     {
-      return _ships.TryGetValue(shipType, out List<string[]> ships) ? ships.ToArray() : new List<string[]>().ToArray();
+      return _ships.TryGetValue(shipType, out IList<Square[]> ships) ? ships : new List<Square[]>();
     }
 
-    public Result PlaceShip(ShipType type, string startSquare, Axis axis)
+    public Result PlaceShip(ShipType type, Square startSquare, Axis axis)
     {
       if (!_ships.ContainsKey(type))
       {
-        _ships.Add(type, new List<string[]>());
+        _ships.Add(type, new List<Square[]>());
       }
 
-      try
+      if (TryGenerateShip(type, startSquare, axis, out Square[] ship))
       {
-        var ship = GenerateShip(type, startSquare, axis);
         foreach (var shipAlreadyOnBoard in _ships.Values.SelectMany(sh => sh))
         {
           if (shipAlreadyOnBoard.Intersect(ship).Any())
           {
-            throw new Exception("Cannot place a ship on another ship!");
+            return Result.Failure;
           }
         }
 
         _ships[type].Add(ship);
         return Result.Success;
       }
-      catch (Exception)
-      {
-        return Result.Failure;
-      }
+
+      return Result.Failure;
     }
 
-    private string[] GenerateShip(ShipType type, string startSquare, Axis axis)
+    private bool TryGenerateShip(ShipType type, Square startSquare, Axis axis, out Square[] shipSquares)
     {
-      var squares = new List<string>();
+      var squares = new List<Square>();
 
-      var start = startSquare.ToUpper();
-
-      var column = (int)(start[0] - 'A');
-      var row = int.Parse(start.Substring(1));
+      var column = (int)(startSquare.Column - 'A');
+      var row = startSquare.Row;
 
       for (var i = 0; i < _shipSizes[type]; ++i)
       {
         if (row > RowCount || column + 1 > ColumnCount)
         {
-          throw new Exception("Ship will not fit!");
+          break;
         }
 
-        var square = $"{(char)(column + 'A')}{row}";
+        var square = new Square((char)(column + 'A'), row);
         squares.Add(square);
 
         if (axis == Axis.X)
@@ -84,7 +79,9 @@ namespace Battleships
         }
       }
 
-      return squares.ToArray();
+      shipSquares = squares.ToArray();
+
+      return squares.Count == _shipSizes[type];
     }
   }
 }
