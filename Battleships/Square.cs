@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace Battleships
+﻿namespace Battleships
 {
   public class Square
   {
-    public char Column { get { return _column; } set { _column = char.ToUpper(value); } }
-    public int Row { get; set; }
+    public char Column { get { return _column; } private set { _column = char.ToUpper(value); } }
+    public int Row { get; private set; }
 
     private char _column;
 
